@@ -1,5 +1,9 @@
+import os
+
 import discord
 from discord.ext import commands
+
+TOKEN = os.getenv('DISCORD_TOKEN')
 
 intents = discord.Intents.all()
 intents.members = True
@@ -22,17 +26,18 @@ async def on_member_join(member):
         await member.add_roles(role)
 
         # Send a welcome message
-        welcome_channel_id = 586349140628471811  # Replace with your channel ID
+        welcome_channel_id = 586349141622390785  # Replace with your channel ID
         welcome_channel = member.guild.get_channel(welcome_channel_id)
 
         if welcome_channel:
-            await welcome_channel.send(f"Дарова бродяга, {member.mention}! пока что выступаешь в роле '{role_name}a'")
+            await welcome_channel.send(f"Дарова бродяга по имени {member.mention}! пока что выступаешь в роле '{role_name}a', потом разберемся что с тобой делать...")
         else:
             print(f"Error: Welcome channel with ID {welcome_channel_id} not found.")
     else:
         print(f"Error: Role '{role_name}' not found in the server.")
 
 @bot.command()
+@commands.has_permissions(administrator=True)
 async def addrole(ctx, member: discord.Member, role: discord.Role):
     """Adds a specified role to the given user."""
     try:
@@ -45,6 +50,7 @@ async def addrole(ctx, member: discord.Member, role: discord.Role):
     # await discord.guild.member.add_roles(1213834520332345384)
 
 @bot.command()
+@commands.has_permissions(administrator=True)
 async def delrole(ctx, member: discord.Member, role: discord.Role):
     """Adds a specified role to the given user."""
     try:
@@ -57,6 +63,7 @@ async def delrole(ctx, member: discord.Member, role: discord.Role):
 
 
 @bot.command()
+@commands.has_permissions(administrator=True)
 async def createvoice(ctx, role: discord.Role, channel_name: str):
     """Creates a voice channel for a specific role."""
     try:
@@ -81,6 +88,7 @@ async def createvoice(ctx, role: discord.Role, channel_name: str):
 
 
 @bot.command()
+@commands.has_permissions(administrator=True)
 async def createtext(ctx, role: discord.Role, channel_name: str):
     """Creates a voice channel for a specific role."""
     try:
@@ -103,5 +111,5 @@ async def createtext(ctx, role: discord.Role, channel_name: str):
     except discord.HTTPException as e:
         await ctx.send(f"An error occurred: {e}")
 
-bot.run('MTIxMzgxMzUxMDcxNTM0Mjk3Mg.GPGNcA.9tCV2955Tr_f44W2RRj7jWNIIDu_GdMs3Vt_A8')
+bot.run(str(TOKEN))
 
